@@ -3,7 +3,7 @@
     <!-- form me sirf post get jati hai put request ke liye special pakage method-override package ko install karna padta hai-->
      <div class="col-8 offset-2">
         <h3>Edit your Listing</h3>
-        <form action="/listings/<%= listing._id %>?_method=PUT" method="POST" novalidate class="needs-validation">
+        <form action="/listings/<%= listing._id %>?_method=PUT" method="POST" novalidate class="needs-validation" enctype="multipart/form-data">
                
             <div class="mb-3">
                 <label for="tittel" class="form-label">Title</label>
@@ -13,15 +13,19 @@
                  
             <div class="mb-3">
                 <label for="description" class="form-label">Desription</label>
-                <textarea  type="text" name="listing[description]" class="form-control" id="description" style="width:100%" ><%= listing.description%>
-                    required</textarea>
+                <textarea  type="text" name="listing[description]" class="form-control" id="description"  required style="width:100%" ><%= listing.description%> </textarea>
                 <div class="invalid-feedback"> enter valid Description </div>
     
             </div>
+
+            <div class="mb-3">
+                Original Listing Image <br>
+                <img src="<%= originalImgUrl %>"width="200">
+            </div>
     
             <div class="mb-3">
-                <label for="img" class="form-label">Image Link</label>
-                <input type="text" value="<%= listing.image%>" name="listing[img url]" class="form-control" id="img" style="width:100%" required >  <div class="invalid-feedback"> enter valid URL </div>
+                <label for="img" class="form-label"> Upload New Image  </label>
+                <input type="file" value="<%= listing.image%>" name="listing[image]" class="form-control" id="img" style="width:100%"  >  
     
             </div>
     
@@ -29,11 +33,14 @@
                  <div class="mb-3  col-md-4">
                     <div class="mb-3">
                         <label for="price" class="form-label">Price</label>
-                        <input type="text" value=" ₹<%= listing.price%>" name="listing[location]" class="form-control" id="price" style="width:100%"  required> <div class="invalid-feedback"> enter valid Price </div>
-                    </div>
-             
+                        <span class="input-group-text">₹</span>
+                <input type="number" value="<%= listing.price %>" name="listing[price]" class="form-control" id="price" style="width:100%" required>
 
-                 </div>
+                         <div class="invalid-feedback"> enter valid Price
+                        </div>
+                    </div>
+                </div>
+                
                  <div class="mb-3  col-md-8">
                     <div class="mb-3">
                         <label for="country" class="form-label">Country</label>
@@ -57,4 +64,3 @@
     
      </div>
   </div>
-  <script src="/js/script.js"></script>
