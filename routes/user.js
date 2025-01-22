@@ -14,6 +14,8 @@ router.post("/signup",userController.SignUp);
 
 router.get("/login",userController.loginForm);
 
+router.get("",userController.loginForm);
+
 
 router.post(
     "/login",
