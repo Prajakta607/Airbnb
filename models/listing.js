@@ -37,8 +37,6 @@ const listingSchema = new Schema({
     ],
     category: { 
         type: String,  // New category field
-        required: true, // Make it mandatory if needed
-        enum: ["Trending", "Farms", "Beach", "City", "Luxury"], // Define allowed categories
     },
     owner:{
         type:Schema.Types.ObjectId,

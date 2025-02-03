@@ -95,15 +95,45 @@ app.get("/filter-listings", (req, res) => {
     console.log("Filter Type:", filterType);
 
     Listing.find({ category: filterType })
-        .then(filteredListings => {
-            console.log("Filtered Listings:", filteredListings);
-            res.render("views/listings/index.ejs", { filteredListings });
+        .then(allListings => {
+            console.log("Filtered Listings:", allListings);
+            res.render("listings/index.ejs", { allListings });
         })
         .catch(err => {
             console.error(err);
             res.status(500).send("Error fetching filtered listings");
         });
 });
+
+app.get("/search",(req,res)=>{
+    const  dest=req.query.destination;
+    console.log(dest);
+    
+    Listing.find({ country: dest })
+    .then(allListings => {
+        if (allListings.length === 0) {
+            Listing.find({ location: dest })
+                .then(allListings => { // Ensure variable name is consistent
+                    console.log("Filtered Listings:", allListings);
+                    res.render("listings/index.ejs", { allListings });  
+                })
+                .catch(err => {
+                    console.error(err);
+                    res.status(500).send("Error fetching filtered listings");
+                });
+        } else {
+            console.log("Filtered Listings:", allListings);
+            res.render("listings/index.ejs", { allListings });  
+        }
+    })
+    .catch(err => {
+        console.error(err);
+        res.status(500).send("Error fetching listings");
+    });
+   
+})
+
+
 
 app.use("/listings",listingsRouter);
 app.use("/listings/:id/reviews",reviewsRouter);
