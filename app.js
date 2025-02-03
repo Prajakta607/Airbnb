@@ -1,7 +1,7 @@
 if(process.env.NODE_ENV !="production"){
     require('dotenv').config();
 }
-
+const Listing=require("./models/listing.js");
 const express=require("express");
 const mongoose=require("mongoose");
 const app=express();
@@ -88,6 +88,22 @@ app.use((req,res,next)=>{
     next();
 })
 
+app.get("/filter-listings", (req, res) => {
+    console.log("Request received for filter-listings");
+
+    const filterType = req.query.filter || "Trending";  // Default to "Trending" if no filter is provided
+    console.log("Filter Type:", filterType);
+
+    Listing.find({ category: filterType })
+        .then(filteredListings => {
+            console.log("Filtered Listings:", filteredListings);
+            res.render("views/listings/index.ejs", { filteredListings });
+        })
+        .catch(err => {
+            console.error(err);
+            res.status(500).send("Error fetching filtered listings");
+        });
+});
 
 app.use("/listings",listingsRouter);
 app.use("/listings/:id/reviews",reviewsRouter);
@@ -102,6 +118,9 @@ app.use((err,req,res,next)=>{
     res.status(statusCode).render("listings/error.ejs",{message});
    // res.status(statusCode).send(message);
 })
+
+
+
 
 
 app.listen(3002,()=>{
